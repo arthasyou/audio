@@ -1,18 +1,33 @@
-# 步骤1：分析音频中有语音的段落
+import argparse
+import os
+
 from utils import analyze_speech_segments, cut_audio_segments
 
 
 def main():
-    audio_path = "audio/test.mp3"  # 你可以换成其他路径
-    output_dir = "outputs/segments"
+    parser = argparse.ArgumentParser(description="批量分析并切割音频文件")
+    parser.add_argument("-i", "--input", required=True, help="输入音频目录")
+    parser.add_argument("-o", "--output", required=True, help="输出根目录")
+    args = parser.parse_args()
 
-    print("🎧 分析语音段落...")
-    segments = analyze_speech_segments(audio_path)
+    input_dir = args.input
+    output_root = args.output
 
-    print("✂️ 开始切割音频...")
-    cut_audio_segments(audio_path, segments, output_dir)
+    for filename in os.listdir(input_dir):
+        if not filename.lower().endswith((".mp3", ".wav")):
+            continue
 
-    print("✅ 所有操作完成！")
+        audio_path = os.path.join(input_dir, filename)
+        name_without_ext = os.path.splitext(filename)[0]
+        output_dir = os.path.join(output_root, name_without_ext)
+
+        print(f"\n🎧 正在处理音频: {filename}")
+        segments = analyze_speech_segments(audio_path)
+
+        print("✂️ 切割中...")
+        cut_audio_segments(audio_path, segments, output_dir)
+
+    print("\n✅ 所有音频处理完成！")
 
 
 if __name__ == "__main__":
