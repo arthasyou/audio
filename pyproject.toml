@@ -1,0 +1,11 @@
+[project]
+name = "audio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ffmpeg-python>=0.2.0",
+    "huggingface-hub>=0.30.2",
+    "pyannote-audio>=3.3.2",
+]
